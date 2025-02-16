@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      - HTTP_PORT=8080
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=avito_merch
+      - POSTGRES_SSL_MODE=disable
+      - JWT_SECRET_KEY=your-secret-key-here
+      - JWT_TTL=24
+    networks:
+      - avito-network
+
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - "5437:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=avito_merch
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - avito-network
+
+volumes:
+  postgres-data:
+
+networks:
+  avito-network:
+    driver: bridge 

@@ -1,0 +1,53 @@
+@baseUrl = http://localhost:8080
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mzk4MjA2MzgsInVzZXJfaWQiOjIsInVzZXJuYW1lIjoiam9obl9kb2UifQ.F6iXF3LH4c0QjDI8F8hpXgZQDfJnTovO55N9iOGI78Y
+
+
+### Регистрация пользователя
+POST {{baseUrl}}/api/v1/auth
+Content-Type: application/json
+
+{
+    "username": "john_doe",
+    "password": "secure_password123"
+}
+
+### Получение баланса пользователя
+GET {{baseUrl}}/api/v1/user/balance
+Authorization: Bearer {{accessToken}}
+
+### Получение списка мерча
+GET {{baseUrl}}/api/v1/merch
+Content-Type: application/json
+
+### Получение мерча по ID
+GET {{baseUrl}}/api/v1/merch/1
+Content-Type: application/json
+
+### Покупка мерча
+POST {{baseUrl}}/api/v1/merch/buy
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "merch_id": 1,
+    "quantity": 2
+}
+
+### Получение истории покупок
+GET {{baseUrl}}/api/v1/merch/my
+Authorization: Bearer {{accessToken}}
+
+### Перевод монет другому пользователю
+POST {{baseUrl}}/api/v1/transactions/transfer
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "to_user_id": 1,
+    "amount": 100,
+    "description": "За обед"
+}
+
+### Получение истории транзакций
+GET {{baseUrl}}/api/v1/transactions/history
+Authorization: Bearer {{accessToken}}
