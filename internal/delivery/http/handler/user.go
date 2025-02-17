@@ -10,12 +10,20 @@ import (
 )
 
 type userHandler struct {
-	userService domain.UserService
+	userService        domain.UserService
+	transactionService domain.TransactionService
+	merchService       domain.MerchService
 }
 
-func NewUserHandler(userService domain.UserService) *userHandler {
+func NewUserHandler(
+	userService domain.UserService,
+	transactionService domain.TransactionService,
+	merchService domain.MerchService,
+) *userHandler {
 	return &userHandler{
-		userService: userService,
+		userService:        userService,
+		transactionService: transactionService,
+		merchService:       merchService,
 	}
 }
 
@@ -75,7 +83,7 @@ func (h *userHandler) SignIn(c *gin.Context) {
 		return
 	}
 
-	httpDelivery.OK(c, "success", gin.H{
+	httpDelivery.OK(c, "Успешный ответ", gin.H{
 		"token": token,
 	})
 }
@@ -97,7 +105,7 @@ func (h *userHandler) GetBalance(c *gin.Context) {
 		return
 	}
 
-	httpDelivery.OK(c, "success", gin.H{
+	httpDelivery.OK(c, "Успешный ответ", gin.H{
 		"balance": balance,
 	})
 }
@@ -119,7 +127,49 @@ func (h *userHandler) Auth(c *gin.Context) {
 		return
 	}
 
-	httpDelivery.OK(c, "success", gin.H{
+	httpDelivery.OK(c, "Успешный ответ", gin.H{
 		"token": token,
 	})
+}
+
+func (h *userHandler) GetInfo(c *gin.Context) {
+	userID, err := middleware.GetUserID(c)
+	if err != nil {
+		httpDelivery.NewErrorResponse(c, http.StatusUnauthorized, err.Error(), "unauthorized")
+		return
+	}
+
+	balance, err := h.userService.GetBalance(c.Request.Context(), userID)
+	if err != nil {
+		if err == domain.ErrUserNotFound {
+			httpDelivery.NewErrorResponse(c, http.StatusNotFound, err.Error(), "user_not_found")
+			return
+		}
+		httpDelivery.NewErrorResponse(c, http.StatusInternalServerError, err.Error(), "internal_error")
+		return
+	}
+
+	transactions, err := h.transactionService.GetUserTransactions(c.Request.Context(), userID)
+	if err != nil {
+		if err == domain.ErrUserNotFound {
+			httpDelivery.NewErrorResponse(c, http.StatusNotFound, err.Error(), "user_not_found")
+			return
+		}
+		httpDelivery.NewErrorResponse(c, http.StatusInternalServerError, err.Error(), "internal_error")
+		return
+	}
+
+	purchases, err := h.merchService.GetUserPurchases(c.Request.Context(), userID)
+	if err != nil {
+		httpDelivery.NewErrorResponse(c, http.StatusInternalServerError, err.Error(), "internal_error")
+		return
+	}
+
+	response := &domain.UserInfoResponse{
+		Balance:      balance,
+		Transactions: transactions,
+		Purchases:    purchases,
+	}
+
+	httpDelivery.OK(c, "Успешный ответ", response)
 }

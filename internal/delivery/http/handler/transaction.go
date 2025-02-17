@@ -78,5 +78,5 @@ func (h *transactionHandler) GetHistory(c *gin.Context) {
 		return
 	}
 
-	httpDelivery.OK(c, "success", transactions)
+	httpDelivery.OK(c, "Успешный ответ", transactions)
 }

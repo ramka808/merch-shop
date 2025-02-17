@@ -47,7 +47,7 @@ func (s *TransactionService) Transfer(ctx context.Context, fromUserID, toUserID 
 		FromUserID:  fromUserID,
 		ToUserID:    toUserID,
 		Amount:      amount,
-		Description: description,
+		Description: &description,
 	}
 
 	// Выполняем перевод денег и создаем запись о транзакции

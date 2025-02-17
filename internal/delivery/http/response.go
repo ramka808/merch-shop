@@ -6,8 +6,8 @@ import (
 
 // Response представляет структуру успешного ответа
 type Response struct {
-	Message string      `json:"message,omitempty"`
-	Data    interface{} `json:"data,omitempty"`
+	Message string      `json:"description,omitempty"`
+	Data    interface{} `json:"schema,omitempty"`
 }
 
 // NewResponse отправляет успешный ответ

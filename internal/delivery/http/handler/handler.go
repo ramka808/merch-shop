@@ -25,15 +25,10 @@ func (h *Handler) Init(router *gin.Engine, tokenSecret string) {
 
 	v1 := router.Group("/api")
 	{
-		userHandler := NewUserHandler(h.userService)
+		userHandler := NewUserHandler(h.userService, h.transactionService, h.merchService)
 		v1.POST("/auth", userHandler.Auth)
-
-		userGroup := v1.Group("/user")
-		userGroup.Use(authMiddleware)
-		{
-			userHandler := NewUserHandler(h.userService)
-			userGroup.GET("/balance", userHandler.GetBalance)
-		}
+		
+		v1.GET("/info", authMiddleware, userHandler.GetInfo)
 
 		merchGroup := v1.Group("/merch")
 		{
@@ -45,7 +40,6 @@ func (h *Handler) Init(router *gin.Engine, tokenSecret string) {
 			protected.Use(authMiddleware)
 			{
 				protected.POST("/buy", merchHandler.Buy)
-				protected.GET("/my", merchHandler.GetUserPurchases)
 			}
 		}
 
@@ -54,7 +48,6 @@ func (h *Handler) Init(router *gin.Engine, tokenSecret string) {
 		{
 			transactionHandler := NewTransactionHandler(h.transactionService)
 			transactionGroup.POST("/transfer", transactionHandler.Transfer)
-			transactionGroup.GET("/history", transactionHandler.GetHistory)
 		}
 	}
 }

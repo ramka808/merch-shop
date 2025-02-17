@@ -1,53 +1,45 @@
 @baseUrl = http://localhost:8080
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mzk4MjA2MzgsInVzZXJfaWQiOjIsInVzZXJuYW1lIjoiam9obl9kb2UifQ.F6iXF3LH4c0QjDI8F8hpXgZQDfJnTovO55N9iOGI78Y
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mzk4NTE2NjcsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoiam9obl9kb2UxIn0.CFryzQLUUmDqTM5fvlfGb9VY07MeRUuV4fVUwcDk2tQ
 
 
 ### Регистрация пользователя
-POST {{baseUrl}}/api/v1/auth
+POST {{baseUrl}}/api/auth
 Content-Type: application/json
 
 {
-    "username": "john_doe",
+    "username": "john_doe12",
     "password": "secure_password123"
 }
 
-### Получение баланса пользователя
-GET {{baseUrl}}/api/v1/user/balance
+### Получение информации о пользователе (баланс, история транзакций и покупок)
+GET {{baseUrl}}/api/info
 Authorization: Bearer {{accessToken}}
 
 ### Получение списка мерча
-GET {{baseUrl}}/api/v1/merch
+GET {{baseUrl}}/api/merch
 Content-Type: application/json
 
 ### Получение мерча по ID
-GET {{baseUrl}}/api/v1/merch/1
+GET {{baseUrl}}/api/merch/10
 Content-Type: application/json
 
 ### Покупка мерча
-POST {{baseUrl}}/api/v1/merch/buy
+POST {{baseUrl}}/api/merch/buy
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "merch_id": 1,
+    "merch_id": 3,
     "quantity": 2
 }
 
-### Получение истории покупок
-GET {{baseUrl}}/api/v1/merch/my
-Authorization: Bearer {{accessToken}}
-
 ### Перевод монет другому пользователю
-POST {{baseUrl}}/api/v1/transactions/transfer
+POST {{baseUrl}}/api/transactions/transfer
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "to_user_id": 1,
+    "to_user_id": 2,
     "amount": 100,
     "description": "За обед"
 }
-
-### Получение истории транзакций
-GET {{baseUrl}}/api/v1/transactions/history
-Authorization: Bearer {{accessToken}}

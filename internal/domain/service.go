@@ -16,7 +16,7 @@ type MerchService interface {
 	List(ctx context.Context, page, pageSize int) ([]*Merch, error)
 	GetByID(ctx context.Context, id int64) (*Merch, error)
 	Buy(ctx context.Context, userID, merchID int64, quantity int) error
-	GetUserPurchases(ctx context.Context, userID int64) ([]*Purchase, error)
+	GetUserPurchases(ctx context.Context, userID int64) ([]*PurchaseResponse, error)
 }
 
 // TransactionService определяет методы для работы с транзакциями

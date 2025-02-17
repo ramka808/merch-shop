@@ -35,7 +35,7 @@ func (h *merchHandler) GetList(c *gin.Context) {
 		return
 	}
 
-	httpDelivery.OK(c, "success", items)
+	httpDelivery.OK(c, "Успешный ответ", items)
 }
 
 func (h *merchHandler) GetByID(c *gin.Context) {
@@ -55,7 +55,7 @@ func (h *merchHandler) GetByID(c *gin.Context) {
 		return
 	}
 
-	httpDelivery.OK(c, "success", merch)
+	httpDelivery.OK(c, "Успешный ответ", merch)
 }
 
 func (h *merchHandler) Buy(c *gin.Context) {
@@ -106,5 +106,5 @@ func (h *merchHandler) GetUserPurchases(c *gin.Context) {
 		return
 	}
 
-	httpDelivery.OK(c, "success", purchases)
+	httpDelivery.OK(c, "Успешный ответ", purchases)
 }

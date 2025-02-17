@@ -3,11 +3,13 @@ FROM golang:1.22-alpine AS builder
 
 WORKDIR /app
 
-# Установка зависимостей
+# Установка зависимостей и Goose
+RUN go install github.com/pressly/goose/v3/cmd/goose@latest
+
+# Копирование исходного кода и миграций
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Копирование исходного кода
 COPY . .
 
 # Сборка приложения
@@ -18,13 +20,18 @@ FROM alpine:latest
 
 WORKDIR /app
 
-# Копирование бинарного файла из этапа сборки
+# Копирование бинарного файла и миграций из этапа сборки
 COPY --from=builder /app/main .
 COPY --from=builder /app/migrations ./migrations
+COPY --from=builder /go/bin/goose /usr/local/bin/goose
 
 # Установка необходимых зависимостей
 RUN apk --no-cache add ca-certificates
 
+# Создаем скрипт для запуска
+COPY scripts/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 8080
 
-CMD ["./main"] 
+ENTRYPOINT ["/entrypoint.sh"] 

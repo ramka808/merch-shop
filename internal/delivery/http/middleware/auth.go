@@ -20,7 +20,7 @@ func AuthMiddleware(tokenSecret string) gin.HandlerFunc {
 		if header == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 				"message": "empty auth header",
-				"code":    "unauthorized",
+				"description":    "unauthorized",
 			})
 			return
 		}
@@ -29,7 +29,7 @@ func AuthMiddleware(tokenSecret string) gin.HandlerFunc {
 		if len(headerParts) != 2 || headerParts[0] != "Bearer" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 				"message": "invalid auth header",
-				"code":    "unauthorized",
+				"description":    "unauthorized",
 			})
 			return
 		}
@@ -37,7 +37,7 @@ func AuthMiddleware(tokenSecret string) gin.HandlerFunc {
 		if len(headerParts[1]) == 0 {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 				"message": "token is empty",
-				"code":    "unauthorized",
+				"description":    "unauthorized",
 			})
 			return
 		}
@@ -52,7 +52,7 @@ func AuthMiddleware(tokenSecret string) gin.HandlerFunc {
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 				"message": "invalid token",
-				"code":    "unauthorized",
+				"description":    "unauthorized",
 			})
 			return
 		}
@@ -61,7 +61,7 @@ func AuthMiddleware(tokenSecret string) gin.HandlerFunc {
 		if !ok {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 				"message": "invalid token claims",
-				"code":    "unauthorized",
+				"description":    "unauthorized",
 			})
 			return
 		}
@@ -70,7 +70,7 @@ func AuthMiddleware(tokenSecret string) gin.HandlerFunc {
 		if !ok {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 				"message": "invalid user id",
-				"code":    "unauthorized",
+				"description":    "unauthorized",
 			})
 			return
 		}

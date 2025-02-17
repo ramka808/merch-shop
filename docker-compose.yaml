@@ -6,7 +6,8 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
       - HTTP_PORT=8080
       - POSTGRES_HOST=postgres
@@ -32,6 +33,11 @@ services:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - avito-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres-data:

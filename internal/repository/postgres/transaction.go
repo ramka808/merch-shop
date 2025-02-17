@@ -114,15 +114,6 @@ func (r *TransactionRepository) TransferMoney(ctx context.Context, fromUserID, t
 			return fmt.Errorf("failed to update recipient balance: %w", err)
 		}
 
-		_, err = tx.ExecContext(ctx, `
-			INSERT INTO transactions (from_user_id, to_user_id, amount, created_at)
-			VALUES ($1, $2, $3, CURRENT_TIMESTAMP)`,
-			fromUserID, toUserID, amount,
-		)
-		if err != nil {
-			return fmt.Errorf("failed to create transaction record: %w", err)
-		}
-
 		return nil
 	})
 }

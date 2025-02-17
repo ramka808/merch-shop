@@ -55,8 +55,8 @@ func (r *PurchaseRepository) GetByID(ctx context.Context, id int64) (*domain.Pur
 	return purchase, nil
 }
 
-func (r *PurchaseRepository) GetByUserID(ctx context.Context, userID int64) ([]*domain.Purchase, error) {
-	var purchases []*domain.Purchase
+func (r *PurchaseRepository) GetByUserID(ctx context.Context, userID int64) ([]*domain.PurchaseResponse, error) {
+	var purchases []*domain.PurchaseResponse
 
 	query := `
 		SELECT p.id, p.user_id, p.merch_id, p.quantity, p.created_at,

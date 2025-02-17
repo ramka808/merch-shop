@@ -90,12 +90,6 @@ func (s *MerchService) Buy(ctx context.Context, userID, merchID int64, quantity 
 	return nil
 }
 
-func (s *MerchService) GetUserPurchases(ctx context.Context, userID int64) ([]*domain.Purchase, error) {
-	// Проверяем существование пользователя
-	_, err := s.userRepo.GetByID(ctx, userID)
-	if err != nil {
-		return nil, domain.ErrUserNotFound
-	}
-
+func (s *MerchService) GetUserPurchases(ctx context.Context, userID int64) ([]*domain.PurchaseResponse, error) {
 	return s.purchaseRepo.GetByUserID(ctx, userID)
 }

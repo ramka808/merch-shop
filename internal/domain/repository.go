@@ -29,7 +29,7 @@ type MerchRepository interface {
 // PurchaseRepository определяет методы для работы с покупками
 type PurchaseRepository interface {
 	Create(ctx context.Context, purchase *Purchase) error
-	GetByUserID(ctx context.Context, userID int64) ([]*Purchase, error)
+	GetByUserID(ctx context.Context, userID int64) ([]*PurchaseResponse, error)
 	GetByID(ctx context.Context, id int64) (*Purchase, error)
 }
 
